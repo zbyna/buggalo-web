@@ -1,0 +1,6 @@
+<Files view.php>
+AuthType Basic
+AuthName " Protected Area - exception detail"
+AuthUserFile /home/a8891895/public_html/.htpasswd
+Require valid-user
+</Files>
