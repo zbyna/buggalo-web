@@ -28,7 +28,7 @@ class mysql_connection {
 	var $number_of_queries;
 	var $total_time_used;
 
-	function mysql_connection($database, $server, $username, $password) {
+	function __construct($database, $server, $username, $password) {
 		$this->database = $database;
 		$this->server = $server;
 		$this->username = $username;
@@ -49,9 +49,9 @@ class mysql_connection {
 	}
 
 	function open() {
-		$this->connection =  @mysql_pconnect($this->server, $this->username, $this->password);
+		$this->connection =  mysqli_connect($this->server, $this->username, $this->password, $this->database);
 		if($this->connection) {
-			mysql_select_db($this->database, $this->connection);
+			mysqli_select_db( $this->connection,$this->database);
 			return true;
 		} else {
 			if(is_callable($this->error_handler))
@@ -61,24 +61,24 @@ class mysql_connection {
 	}
 
 	function close() {
-		mysql_close($this->connection);
+		mysqli_close($this->connection);
 	}
 
-	function fetch($query, $bind = NULL, $res_type = MYSQL_ASSOC) {
+	function fetch($query, $bind = NULL, $res_type = MYSQLI_ASSOC) {
 		$this->number_of_queries++;
 
 		$query = $this->_bind($query, $bind);
 		$this->last_query = $query;
 
 		$start_time = $this->_microtime();
-		$res = mysql_query($query, $this->connection);
+		$res = mysqli_query( $this->connection, $query );
 		$this->total_time_used += $this->_microtime() - $start_time;
 		
 		if($res) {
 			$rows = array();
-			while( $row =  mysql_fetch_array($res, $res_type) )
+			while( $row =  mysqli_fetch_array($res, $res_type) )
 				$rows[] = $row;
-			mysql_free_result($res);
+			mysqli_free_result($res);
 		} else {
 			$rows = false;
 		}
@@ -87,19 +87,19 @@ class mysql_connection {
 		return $rows;
 	}
 
-	function fetch_row($query, $bind = NULL, $res_type = MYSQL_ASSOC) {
+	function fetch_row($query, $bind = NULL, $res_type = MYSQLI_ASSOC) {
 		$this->number_of_queries++;
 
 		$query = $this->_bind($query, $bind);
 		$this->last_query = $query;
 
 		$start_time = $this->_microtime();
-		$res = mysql_query($query, $this->connection);
+		$res = mysqli_query( $this->connection, $query );
 		$this->total_time_used += $this->_microtime() - $start_time;
 		
 		if($res) {
-			$row = mysql_fetch_array($res, $res_type);
-			mysql_free_result($res);
+			$row = mysqli_fetch_array($res, $res_type);
+			mysqli_free_result($res);
 		} else {
 			$row = false;
 		}
@@ -115,21 +115,21 @@ class mysql_connection {
 		$this->last_query = $query;
 
 		$start_time = $this->_microtime();
-		$res = mysql_query($query, $this->connection);
+		$res = mysqli_query( $this->connection, $query );
 		$this->total_time_used += $this->_microtime() - $start_time;
 		
-		$affected = mysql_affected_rows();
+		$affected = mysqli_affected_rows();
 
 		$this->session_errors |= (bool) $this->is_error();
 		return ($affected > 0);
 	}
 
 	function _prepare_string($string) {
-		return is_null($string) ? 'NULL' : "'".mysql_real_escape_string(stripslashes($string), $this->connection)."'";
+		return is_null($string) ? 'NULL' : "'".mysqli_real_escape_string( $this->connection,stripslashes($string))."'";
 	}
 
 	function _prepare_numberic($number) {
-		return is_null($number) ? 'NULL' : mysql_real_escape_string($number, $this->connection);
+		return is_null($number) ? 'NULL' : mysqli_real_escape_string( $this->connection,$number);
 	}
 
 	function _bind($sql, $bind) {
@@ -149,13 +149,13 @@ class mysql_connection {
 	}
 
 	function get_auto_increment_value() {
-		return mysql_insert_id($this->connection);
+		return mysqli_insert_id($this->connection);
 	}
 
 	function is_error() {
-		if(is_callable($this->error_handler) && mysql_error($this->connection)) {
-			$this->last_error = mysql_error($this->connection);
-			call_user_func($this->error_handler, $this, mysql_errno($this->connection), mysql_error($this->connection));
+		if(is_callable($this->error_handler) && mysqli_error($this->connection)) {
+			$this->last_error = mysqli_error($this->connection);
+			call_user_func($this->error_handler, $this, mysqli_errno($this->connection), mysqli_error($this->connection));
 			return true;
 		} else {
 			return false;
