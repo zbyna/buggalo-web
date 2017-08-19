@@ -1,7 +1,7 @@
 <?php
 	require_once('config.php');
-
-	$columns = array('id','timestamp','addon_name', 'addon_version', 'title', 'ip', 'status');
+        // nutno změnit manipulace se sloupci - přidávání nebo ubírání
+	$columns = array('id','doplnek_verze','timestamp','addon_name', 'addon_version', 'title', 'ip', 'status');
 
 	$echo = isset($_REQUEST['sEcho']) ? intval($_REQUEST['sEcho']) : -1;
 	$start = isset($_REQUEST['iDisplayStart']) ? intval($_REQUEST['iDisplayStart']) : false;
@@ -50,16 +50,20 @@
 	session_set_issues($rows);
 
 	$issues = array();
-	foreach($rows as $row) {
-		$issues[] = array(
-			$row['id'],
-			$row['timestamp'],
-			$row['addon_name'],
-			$row['addon_version'],
-			$row['title'],
-			$row['ip'],
-			$row['status']
-		);
+	if (is_array($rows))
+	{
+		foreach($rows as $row) {
+			$issues[] = array(       // nutno změnit manipulace se sloupci - přidávání nebo ubírání
+				$row['id'],
+                                $row['doplnek_verze'],
+				$row['timestamp'],
+				$row['addon_name'],
+				$row['addon_version'],
+				$row['title'],
+				$row['ip'],
+				$row['status']
+			);
+		}
 	}
 
 	$issues_page = array_slice($issues, $start, $length);

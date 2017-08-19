@@ -1,4 +1,4 @@
-<?
+<?php
 // $Header: /var/lib/cvs/morsmad/libs/lib_mysql.php,v 1.2 2011-08-08 17:44:40 tommy Exp $
 
 define('DB_NOCONNECTION', -1000);

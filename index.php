@@ -1,14 +1,15 @@
 <?php
-
+    // nutno změnit manipulace se sloupci - přidávání nebo ubírání <thead> - hlavička :-) a <tfoot> - filtry :-)
 	$content = <<<HTML
 	<h2>Exception Viewer</h2>
 	<table id="issues" style="width: 100%;">
 		<thead>
-			<tr>
+			<tr> 
 				<th>ID</th>
+                                <th>ADDON Version</th>
 				<th>Date</th>
-				<th>Name</th>
-				<th>Version</th>
+				<th>KODI Version</th>
+				<th>System</th>
 				<th>Exception</th>
 				<th>Submitter</th>
 				<th>Status</th>
@@ -18,12 +19,13 @@
 		</tbody>
 		<tfoot>
 			<th />
+			<th filter-index="1" filter-name="doplnek_verze"/>
+                        <th />
+			<th filter-index="3" filter-name="addon_name" />
+			<th filter-index="4" filter-name="addon_version" />
 			<th />
-			<th filter-index="2" filter-name="addon_name" />
-			<th filter-index="3" filter-name="addon_version" />
-			<th />
-			<th filter-index="5" filter-name="ip" />
-			<th filter-index="6" filter-name="status" />
+			<th filter-index="6" filter-name="ip" />
+			<th filter-index="7" filter-name="status" />
 		</tfoot>
 	</table>
 	<script type="text/javascript">
@@ -135,10 +137,11 @@ $(document).ready(function() {
 		'aaSorting' : [[0, 'desc']],
 		'aoColumns' : [
 			{'sWidth' : '5%'},
+                        {'sWidth' : '10%'},
 			{'sWidth' : '15%'},
 			{'sWidth' : '10%'},
 			{'sWidth' : '5%'},
-			{'sWidth' : '50%'},
+			{'sWidth' : '40%'},
 			{'sWidth' : '10%'},
 			{'sWidth' : '5%'},
 		],

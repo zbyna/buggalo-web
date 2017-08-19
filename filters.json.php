@@ -1,7 +1,9 @@
 <?php
 	require_once('config.php');
+        
+        // nutno změnit manipulace se sloupci - přidávání nebo ubírání - pro funkčnost filtrů :-)
 
-	$types = array('addon_name', 'addon_version', 'ip', 'status');
+	$types = array('doplnek_verze','addon_name', 'addon_version', 'ip', 'status');
 
 	$json = array();
 	foreach($types as $type) {

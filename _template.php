@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+        <meta charset="UTF-8">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="googlebot" content="noindex, nofollow">
 	<title>Exception Viewer</title>
   <link rel="stylesheet" type="text/css" href="css/style.css "/>
   <link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" />

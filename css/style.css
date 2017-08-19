@@ -59,6 +59,7 @@ table {
 
 table td, table th {
 	padding: 2px;
+        white-space: pre;
 }
 
 td.header {
@@ -66,7 +67,7 @@ td.header {
 	font-size: 1.6em;
 	border-bottom: 2px solid black;
 	padding-top: 20px;
-	text-align: right;
+	text-align: left;
 }
 
 th {
